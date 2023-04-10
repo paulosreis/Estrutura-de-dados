@@ -13,13 +13,12 @@ public:
   Heap(int n, int dados[]);
   ~Heap();
   void escreve_niveis();
-  void escreve(const string& prefixo = "", int i = 0);
+  void escreve(const string &prefixo = "", int i = 0);
   void insere(int p);
   int consulta_maxima();
   int extrai_maxima();
   void altera_prioridade(int i, int p);
 
-  
 private:
   vector<int> S;
 
@@ -31,11 +30,10 @@ private:
   void sobe(int i);
 };
 
-
 int main(void)
 {
   Heap h; // construtor Heap()
-  
+
   for (int i = 1; i <= 10; i++)
     h.insere(i);
   printf("h:\n");
@@ -48,8 +46,8 @@ int main(void)
 
   return 0;
 
-  int v[] = {1,2,3,4,5};
-  
+  int v[] = {1, 2, 3, 4, 5};
+
   Heap h2(5, v); // construtor Heap(int n, int dados[])
   h2.insere(15);
   printf("h2:\n");
@@ -64,7 +62,7 @@ int main(void)
   h2.insere(40);
   printf("h4:\n");
   h4.escreve();
-  
+
   h = h2; // operador de atribuição, sem constructor ou constructor de cópia
   h.insere(100);
   printf("h2:\n");
@@ -141,30 +139,36 @@ terá que escrevê-los
 
 */
 
-
 //*************************************
 //*** IMPLEMENTAÇÕES DA CLASSE HEAP ***
 //*************************************
 
-Heap::Heap() {
+Heap::Heap()
+{
 }
 
-Heap::Heap(int n, int dados[]) :
-  S(dados, dados + n) {
-  //TODO: implementar (constroi_max_heap)
-
+Heap::Heap(int n, int dados[]) : S(dados, dados + n)
+{
+  // TODO: implementar (constroi_max_heap)
+  int i;
+  for (i = (this->S.size() / 2) - 1; i >= 0; i--)
+    desce(i);
 }
 
-Heap::~Heap() {
+Heap::~Heap()
+{
 }
 
-void Heap::escreve_niveis() {
+void Heap::escreve_niveis()
+{
   int escritos = 0, fim_nivel = 1;
 
-  for(auto const& elemento: S) {
-  // Equivalente a for (unsigned i = 0; i < S.size(); i++) { printf("%d ", S[i]);
+  for (auto const &elemento : S)
+  {
+    // Equivalente a for (unsigned i = 0; i < S.size(); i++) { printf("%d ", S[i]);
     printf("%d ", elemento);
-    if (++escritos == fim_nivel) {
+    if (++escritos == fim_nivel)
+    {
       putchar('\n');
       fim_nivel *= 2;
       escritos = 0;
@@ -173,67 +177,90 @@ void Heap::escreve_niveis() {
   putchar('\n');
 }
 
-void Heap::escreve(const string& prefixo, int i) {
-  if (i < (int) S.size()) {
+void Heap::escreve(const string &prefixo, int i)
+{
+  if (i < (int)S.size())
+  {
     bool ehEsquerdo = i % 2 != 0;
-    bool temIrmao = i < (int) S.size()-1;
-    
+    bool temIrmao = i < (int)S.size() - 1;
+
     printf(prefixo.c_str());
-    printf(ehEsquerdo and temIrmao ? "├──" : "└──" );
+    printf(ehEsquerdo and temIrmao ? "├──" : "└──");
 
     printf("%d\n", S[i]);
-      
+
     escreve(prefixo + (ehEsquerdo ? "│   " : "    "), esquerdo(i));
     escreve(prefixo + (ehEsquerdo ? "│   " : "    "), direito(i));
   }
 }
 
-int Heap::pai(int i) {
+int Heap::pai(int i)
+{
   return (i - 1) / 2;
 }
 
-int Heap::esquerdo(int i) {
+int Heap::esquerdo(int i)
+{
   return 2 * (i + 1) - 1;
 }
 
-int Heap::direito(int i) {
+int Heap::direito(int i)
+{
   return 2 * (i + 1);
 }
 
-void Heap::troca(int i, int j) {
+void Heap::troca(int i, int j)
+{
   int aux = S[i];
   S[i] = S[j];
   S[j] = aux;
 }
 
-void Heap::desce(int i) {
-  //TODO: implementar
-
+void Heap::desce(int i)
+{
+  // TODO: implementar
+  int e, d, maior;
+  e = esquerdo(i);
+  d = direito(i);
+  if (e < this->S.size() && S[e] > S[i])
+    maior = e;
+  else
+    maior = i;
+  if (d < this->S.size() && S[d] > S[maior])
+    maior = d;
+  if (maior != i)
+  {
+    troca(S[i], S[maior]);
+    desce(maior);
+  }
 }
 
-void Heap::sobe(int i) {
-  while (S[pai(i)] < S[i]) {
+void Heap::sobe(int i)
+{
+  while (S[pai(i)] < S[i])
+  {
     troca(i, pai(i));
     i = pai(i);
   }
 }
 
-void Heap::insere(int p) {
+void Heap::insere(int p)
+{
   S.push_back(p);
-  sobe(S.size()-1);
+  sobe(S.size() - 1);
 }
 
-int Heap::consulta_maxima() {
-  //TODO: implementar
-
+int Heap::consulta_maxima()
+{
+  // TODO: implementar
 }
 
-int Heap::extrai_maxima() {
-  //TODO: implementar
-
+int Heap::extrai_maxima()
+{
+  // TODO: implementar
 }
 
-void Heap::altera_prioridade(int i, int p) {
-  //TODO: implementar
-
+void Heap::altera_prioridade(int i, int p)
+{
+  // TODO: implementar
 }
