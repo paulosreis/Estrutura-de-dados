@@ -44,7 +44,7 @@ int main(void)
   printf("h:\n");
   h.escreve();
 
-  return 0;
+  // return 0;
 
   int v[] = {1, 2, 3, 4, 5};
 
@@ -150,8 +150,10 @@ Heap::Heap()
 Heap::Heap(int n, int dados[]) : S(dados, dados + n)
 {
   // TODO: implementar (constroi_max_heap)
-  int i;
-  for (i = (this->S.size() / 2) - 1; i >= 0; i--)
+  int i, t;
+
+  t = (int)S.size();
+  for (i = t / 2 - 1; i >= 0; i--)
     desce(i);
 }
 
@@ -179,6 +181,7 @@ void Heap::escreve_niveis()
 
 void Heap::escreve(const string &prefixo, int i)
 {
+
   if (i < (int)S.size())
   {
     bool ehEsquerdo = i % 2 != 0;
@@ -188,6 +191,7 @@ void Heap::escreve(const string &prefixo, int i)
     printf(ehEsquerdo and temIrmao ? "├──" : "└──");
 
     printf("%d\n", S[i]);
+    // printf("Tamanho do vetor: %d\n", (int)S.size());
 
     escreve(prefixo + (ehEsquerdo ? "│   " : "    "), esquerdo(i));
     escreve(prefixo + (ehEsquerdo ? "│   " : "    "), direito(i));
@@ -220,13 +224,16 @@ void Heap::desce(int i)
 {
   // TODO: implementar
   int e, d, maior;
-  e = esquerdo(i);
-  d = direito(i);
-  if (e < this->S.size() && S[e] > S[i])
+
+  int n = (int)S.size();
+
+  e = (int)esquerdo(i);
+  d = (int)direito(i);
+  if (e < n && S[e] > S[i])
     maior = e;
   else
     maior = i;
-  if (d < this->S.size() && S[d] > S[maior])
+  if (d < n && (int)S[d] > (int)S[maior])
     maior = d;
   if (maior != i)
   {
@@ -247,20 +254,45 @@ void Heap::sobe(int i)
 void Heap::insere(int p)
 {
   S.push_back(p);
-  sobe(S.size() - 1);
+  sobe((int)S.size() - 1);
 }
 
 int Heap::consulta_maxima()
 {
   // TODO: implementar
+  return S[0];
 }
 
 int Heap::extrai_maxima()
 {
   // TODO: implementar
+  int maior;
+  int n = (int)S.size();
+  if (n > 0)
+  {
+    maior = S[0];
+    S[0] = S[n - 1];
+    S.resize(n - 1);
+    desce(0);
+    return maior;
+  }
+  else
+  {
+    return INT_MIN;
+  }
 }
 
 void Heap::altera_prioridade(int i, int p)
 {
   // TODO: implementar
+  if (p > S[i])
+  {
+    S[i] = p;
+    sobe(i);
+  }
+  if (p < S[i])
+  {
+    S[i] = p;
+    desce(i);
+  }
 }
