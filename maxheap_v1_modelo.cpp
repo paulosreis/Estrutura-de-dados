@@ -233,18 +233,18 @@ void Heap::desce(int i)
     maior = e;
   else
     maior = i;
-  if (d < n && (int)S[d] > (int)S[maior])
+  if (d < n && S[d] > S[maior])
     maior = d;
   if (maior != i)
   {
-    troca(S[i], S[maior]);
+    troca(i, maior);
     desce(maior);
   }
 }
 
 void Heap::sobe(int i)
 {
-  while (S[pai(i)] < S[i])
+  while (i > 0 && S[pai(i)] < S[i])
   {
     troca(i, pai(i));
     i = pai(i);
